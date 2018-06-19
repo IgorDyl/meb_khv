@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use kartik\widgets\FileInput
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Works */
@@ -21,6 +22,10 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'date')->textInput() ?>
 
     <?= $form->field($model, 'photo')->textInput() ?>
+
+    <?= $form->field($model, 'avatar')->widget(FileInput::classname(), [
+    'options' => ['accept' => 'image/*'],
+]); ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

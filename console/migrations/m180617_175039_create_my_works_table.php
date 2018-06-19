@@ -18,7 +18,7 @@ class m180617_175039_create_my_works_table extends Migration
             'name'=> $this->string()->notNull(),
             'text'=>$this->text()->null(),
             'date'=>$this->date()->null(),
-            'photo'=>$this->binary()->null(),
+            'photo'=>$this->string()->null(),
         ]);
     }
 
