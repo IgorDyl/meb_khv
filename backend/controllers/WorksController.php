@@ -33,6 +33,48 @@ class WorksController extends Controller
      * Lists all Works models.
      * @return mixed
      */
+    public function actionsSaveImg()
+    {
+        $this->enaleCsrfValidation = false;
+        if (Yii::$app->request->isPost) {
+            $post = ii::$app->request->post();
+            $dir = Yii::getAlias('@images').'/'.$post['class'].'/';
+            if (!file_exist($dir)) {
+                FileHelper::createDirectory($dir);
+            }
+            $result_link = str_replace ('admin.','',Url::home(true)).'uploads/images/'.$post['class'].'/';
+            $file = UploadedFile::getInstanceByName('Images[attachment]');
+            $model = new Images();
+            $model->file->name=strtotime('now').'_'.Yii::$app->getSecurity()->generateRandomString(6) . '.' . $model->file->extension;
+            $model->load($post);
+            $model->validate();
+            if ($model->hasErrors()) {
+                $result = [
+                    'error' => $model->getFirstError('file')
+                ];
+            } else {
+                //$model->file->name=strtotime('now').'_'.Yii:$app->getSecurity()->generateRandomString(6) . '.' . $model->file->extension;
+                if ($file->saveAs($dir . $model->name)) {
+                    $imag = Yii::$app->image->load($dir . $model->name);
+                    $imag->resize(800, NULL, Yii\image\drivers\Image::PRECISE)
+                        ->save($dir . $model->name, 85);
+                    $result = ['filelink' => $result_link . $model->name, 'filename'=>$model->name];
+                } else {
+                    $result = [
+                        'error' => 'ошибка'
+                    ];
+                }
+                $model->save();
+            }
+            Yii::$app->response->format = Response::FORMAT_JSON;
+
+            return $result;
+        } else {
+            throw new BadRequestHttpException ('Onli POST is allowed');
+        }
+    }
+    
+
     public function actionIndex()
     {
         $searchModel = new WorksSerch();

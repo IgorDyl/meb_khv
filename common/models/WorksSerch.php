@@ -19,7 +19,7 @@ class WorksSerch extends Works
     {
         return [
             [['id', 'category'], 'integer'],
-            [['name', 'text', 'date', 'photo'], 'safe'],
+            [['name', 'text', 'date', 'image'], 'safe'],
         ];
     }
 
@@ -66,7 +66,7 @@ class WorksSerch extends Works
 
         $query->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'text', $this->text])
-            ->andFilterWhere(['like', 'photo', $this->photo]);
+            ->andFilterWhere(['like', 'image', $this->image]);
 
         return $dataProvider;
     }

@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use yii\web\UploadedFile;
 use Yii;
 
 /**
@@ -12,12 +13,14 @@ use Yii;
  * @property string $name
  * @property string $text
  * @property string $date
- * @property resource $photo
+ * @property resource $image
  *
  * @property Category $category0
  */
 class Works extends \yii\db\ActiveRecord
 {
+
+    public $file;
     /**
      * {@inheritdoc}
      */
@@ -34,7 +37,8 @@ class Works extends \yii\db\ActiveRecord
         return [
             [['category', 'name'], 'required'],
             [['category'], 'integer'],
-            [['text', 'photo'], 'string'],
+            [['text', 'image'], 'string'],
+            [['file'], 'image'],
             [['date'], 'safe'],
             [['name'], 'string', 'max' => 255],
             [['category'], 'unique'],
@@ -53,15 +57,43 @@ class Works extends \yii\db\ActiveRecord
             'name' => 'Name',
             'text' => 'Text',
             'date' => 'Date',
-            'photo' => 'Photo',
+            'image' => 'Картинка',
+            'file'=> 'картинка'
         ];
     }
 
+    public function beforeSave ($insert)
+    {
+        if($file = UploadedFile::getInstance($this, 'file')) {
+            $dir = Yii::getAlias('@images').'/work/';
+            // if(file_exists($dir.$this->image)){
+            //    // unlink($dir.$this->image);
+            // }
+            // if (file_exists($dir.'50x50/'.$this->image)){
+            //   //  unlink($dir.'50x50/'.$this->image);
+            // }
+            // if (file_exists($dir.'800x/'.$this->image)){
+            //    // unlink($dir.'800x/'.$this->image);
+            // }
+            $this->image = strtotime('now').'_'.Yii::$app->getSecurity()->generateRandomString(6) . '.' . $file->extension;
+            $file->saveAs($dir.$this->image);
+            $imag = Yii::$app->image->load($dir.$this->image);
+            $imag->backgraund('#fff, 0');
+            $imag->resize('50','50', Yii\image\drivers\Image::INVERSE);
+            $imag->crop('50','50');
+            $imag->save($dir.'50x50/'.$this->image, 90);
+            // $imag = Yii::$app->image->load($dir.$this->image);
+            // $imag->backgraund('#fff, 0');
+            // $imag->resize('800', null, Yii\image\drivers\Image::INVERSE);
+            // $imag->save($dir.'800x/'.$this->image, 90);
+        }
+        return parent::beforeSave($insert);
+    }    
     /**
      * @return \yii\db\ActiveQuery
      */
     public function getCategory0()
     {
-        return $this->hasOne(Category::className(), ['id' => 'category']);
+        return $this->hasMeny(Category::className(), ['id' => 'category']);
     }
 }
