@@ -41,7 +41,6 @@ class Works extends \yii\db\ActiveRecord
             [['file'], 'image'],
             [['date'], 'safe'],
             [['name'], 'string', 'max' => 255],
-            [['category'], 'unique'],
             [['category'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['category' => 'id']],
         ];
     }

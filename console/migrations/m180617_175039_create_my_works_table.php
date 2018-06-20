@@ -14,7 +14,7 @@ class m180617_175039_create_my_works_table extends Migration
     {
         $this->createTable('my_works', [
             'id' => $this->primaryKey(),
-            'category'=> $this->integer()->notNull()->unique(),
+            'category'=> $this->integer()->notNull(),
             'name'=> $this->string()->notNull(),
             'text'=>$this->text()->null(),
             'date'=>$this->date()->null(),
