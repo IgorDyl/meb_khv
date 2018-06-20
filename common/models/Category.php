@@ -47,8 +47,8 @@ class Category extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getMyWorks()
+    public function getWorks()
     {
-        return $this->hasOne(MyWorks::className(), ['category' => 'id']);
+        return $this->hasMany(Works::className(), ['category' => 'id']);
     }
 }

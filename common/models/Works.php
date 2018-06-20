@@ -3,6 +3,7 @@
 namespace common\models;
 
 use yii\web\UploadedFile;
+use yii\helpers\Url;
 use Yii;
 
 /**
@@ -41,7 +42,6 @@ class Works extends \yii\db\ActiveRecord
             [['file'], 'image'],
             [['date'], 'safe'],
             [['name'], 'string', 'max' => 255],
-            [['category'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['category' => 'id']],
         ];
     }
 
@@ -56,8 +56,8 @@ class Works extends \yii\db\ActiveRecord
             'name' => 'Name',
             'text' => 'Text',
             'date' => 'Date',
-            'image' => 'Картинка',
-            'file'=> 'картинка'
+            'image' => 'Имя картинки',
+            'file'=> 'Картинка'
         ];
     }
 
@@ -66,33 +66,43 @@ class Works extends \yii\db\ActiveRecord
         if($file = UploadedFile::getInstance($this, 'file')) {
             $dir = Yii::getAlias('@images').'/work/';
             // if(file_exists($dir.$this->image)){
-            //    // unlink($dir.$this->image);
-            // }
+            //     unlink($dir.$this->image);
+            // }                   
             // if (file_exists($dir.'50x50/'.$this->image)){
-            //   //  unlink($dir.'50x50/'.$this->image);
+            //    unlink($dir.'50x50/'.$this->image);
             // }
             // if (file_exists($dir.'800x/'.$this->image)){
-            //    // unlink($dir.'800x/'.$this->image);
+            //     unlink($dir.'800x/'.$this->image);
             // }
             $this->image = strtotime('now').'_'.Yii::$app->getSecurity()->generateRandomString(6) . '.' . $file->extension;
             $file->saveAs($dir.$this->image);
             $imag = Yii::$app->image->load($dir.$this->image);
-            $imag->backgraund('#fff, 0');
+            $imag->background('#fff, 0');
             $imag->resize('50','50', Yii\image\drivers\Image::INVERSE);
             $imag->crop('50','50');
             $imag->save($dir.'50x50/'.$this->image, 90);
-            // $imag = Yii::$app->image->load($dir.$this->image);
-            // $imag->backgraund('#fff, 0');
-            // $imag->resize('800', null, Yii\image\drivers\Image::INVERSE);
-            // $imag->save($dir.'800x/'.$this->image, 90);
+            $imag = Yii::$app->image->load($dir.$this->image);
+            $imag->background('#fff, 0');
+            $imag->resize('800', null, Yii\image\drivers\Image::INVERSE);
+            $imag->save($dir.'800x/'.$this->image, 90);
         }
         return parent::beforeSave($insert);
-    }    
+    }
+
+    public function getSmallImage()
+    {
+        if($this->image) {
+            $path = str_replace('admin.','',Url::home(true)).'uploads/images/work/50x50/'.$this->image;
+        } else {
+            $path = str_replace('admin.','',Url::home(true)).'uploads/images/abstract-1751248.svg';    
+        }
+        return $path;
+    }   
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCategory0()
+    public function getCategory()
     {
-        return $this->hasMeny(Category::className(), ['id' => 'category']);
+        return $this->hasOne(Category::className(), ['id' => 'category']);
     }
 }
