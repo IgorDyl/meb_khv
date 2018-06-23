@@ -101,7 +101,7 @@ class Works extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCategory()
+    public function getCategoryId()
     {
         return $this->hasOne(Category::className(), ['id' => 'category']);
     }
