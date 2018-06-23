@@ -52,12 +52,12 @@ class Works extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'category' => 'Category',
-            'name' => 'Name',
-            'text' => 'Text',
-            'date' => 'Date',
+            'category' => 'Категория',
+            'name' => 'Название',
+            'text' => 'Описание',
+            'date' => 'Дата работы',
+            'file'=> 'Миниатюра',
             'image' => 'Имя картинки',
-            'file'=> 'Картинка'
         ];
     }
 

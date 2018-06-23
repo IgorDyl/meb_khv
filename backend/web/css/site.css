@@ -121,3 +121,10 @@ a.desc:after {
 
 .works-view td > img {max-width: 50px;}
 .grid-view td > img {max-width: 50px;}
+
+.card-box {
+    background-color: #fbfbfb;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0px 2px 3px #868686;
+}
