@@ -27,7 +27,7 @@ use dosamigos\datepicker\DatePicker;
                 <?= $form->field($model, 'text')->textarea(['rows' => 6]) ?>
             </div>
         </div>
-        <div class="col-md-5">
+        <div class="col-md-6">
             <h4>Изображения</h4>
                 <div class="card-box">
                             <?= $form->field($model, 'file')->widget(FileInput::classname(), [
@@ -35,25 +35,21 @@ use dosamigos\datepicker\DatePicker;
                         ]); ?>
                 </div>
         </div>
-        <div class="col-md-5">
+        <div class="col-md-6">
             <h4>Дата и время</h4>
                 <div class="card-box">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <?= $form->field($model, 'date')->widget(
-                                DatePicker::className(), [
-                                    // inline too, not bad
-                                    // 'inline' => true, 
-                                    // modify template for custom rendering
-                                    //'template' => '<div class="well well-sm" style="background-color: #fff; width:250px">{input}</div>',
-                                    'clientOptions' => [
-                                        'autoclose' => true,
-                                        'format' => 'dd.mm.yyyy'
-                                    ]
-                                ]);
-                            ?>
-                        </div>
-                    </div>
+                    <?= $form->field($model, 'date')->widget(
+                        DatePicker::className(), [
+                            // inline too, not bad
+                            // 'inline' => true, 
+                            // modify template for custom rendering
+                            //'template' => '<div class="well well-sm" style="background-color: #fff; width:250px">{input}</div>',
+                            'clientOptions' => [
+                                'autoclose' => true,
+                                'format' => 'yyyy.mm.dd'
+                            ]
+                        ]);
+                    ?>
                 </div>
         </div>  
     </div>

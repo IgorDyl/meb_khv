@@ -32,7 +32,10 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'name',
             'text:ntext',
-            'date',
+            [
+            'attribute' => 'date',
+            'format' => ['date', 'dd.MM.yyyy']
+            ],
             //'image',
             'SmallImage:image',
 
