@@ -40,6 +40,8 @@ AppAsset::register($this);
         ['label' => 'Мои работы', 'url' => ['/works/index']],
         ['label' => 'Категории работ', 'url' => ['/category/index']],
         ['label' => 'Новости', 'url' => ['/news/index']],
+        ['label' => 'Отзывы', 'url' => ['/reviews/index']],
+        
     ];
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];

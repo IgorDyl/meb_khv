@@ -5,21 +5,21 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "category".
+ * This is the model class for table "reviews".
  *
  * @property int $id
+ * @property int $category
  * @property string $name
- *
- * @property MyWorks $myWorks
+ * @property string $text
  */
-class Category extends \yii\db\ActiveRecord
+class Reviews extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'category';
+        return 'reviews';
     }
 
     /**
@@ -28,7 +28,9 @@ class Category extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name'], 'required'],
+            [['category'], 'integer'],
+            [['name', 'text'], 'required'],
+            [['text'], 'string'],
             [['name'], 'string', 'max' => 255],
         ];
     }
@@ -40,20 +42,14 @@ class Category extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'category' => 'Category',
             'name' => 'Name',
+            'text' => 'Text',
         ];
     }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getWorks()
+    
+    public function getCategoryId()
     {
-        return $this->hasMany(Works::className(), ['category' => 'id']);
-    }
-
-    public function getReviews()
-    {
-        return $this->hasMany(Works::className(), ['category' => 'id']);
+        return $this->hasOne(Category::className(), ['id' => 'category']);
     }
 }
